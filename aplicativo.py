@@ -8,6 +8,8 @@ import seaborn as sns           # (opcional) pode remover se não usar
 import streamlit_option_menu
 from streamlit_option_menu import option_menu
 
+
+
 st.set_page_config(page_title="FIAP - Tech Challenge 1", layout="wide")
 st.title('FIAP - Tech Challenge 1')
 
@@ -305,7 +307,7 @@ with st.sidebar:
 
 
 if selected == "Geral":
-    st.title("Panorama da Vitivinicultura Brasileira")
+    st.title(" 🍇 Panorama da Vitivinicultura Brasileira")
     
     st.markdown("""
     A vitivinicultura brasileira teve início em **1970**, no estado do **Rio Grande do Sul**, e desde então vem se consolidando como uma tradição cultural na produção de vinhos, sucos, espumantes e outros derivados. Atualmente, cerca de **90%** das uvas utilizadas na produção nacional provêm do próprio estado gaúcho, que é o principal polo do setor no país.  
@@ -315,7 +317,7 @@ if selected == "Geral":
     Este relatório apresenta uma análise das importações e exportações de vinhos com origem no Rio Grande do Sul, buscando identificar padrões, tendências e oportunidades. O estudo considera tanto o volume quanto o valor movimentado ao longo dos anos, oferecendo um panorama do desempenho do setor no comércio internacional.
     """)
 
-    st.header('Visão geral dos dados')    
+    st.header(' 📋 Visão geral dos dados')    
     c1, c2 = st.columns(2)
     with c1:
         st.markdown("**Exportações (amostra)**")
@@ -329,11 +331,15 @@ if selected == "Geral":
 
 # Página Exportações
 elif selected == "Exportações":
-    st.subheader("**Exportações**")  
+    st.subheader(" 📤 Exportações")  
 
     st.markdown("""
-    Com base nos dados apresentados em gráficos, observa-se uma evolução significativa das exportações brasileiras de vinhos entre 2009 e 2023.
-    """)
+    As exportações representam um componente estratégico para o fortalecimento do setor vitivinícola brasileiro.  
+    A análise histórica dos últimos anos permite identificar tendências, picos de crescimento e mercados prioritários.  
+
+    Com base nos dados apresentados em gráficos da evolução da quantidade e crescimento percentual, observa-se uma evolução significativa das exportações brasileiras de vinhos entre **2009** e **2023**.
+""")
+
 
     # --- Evolução da Quantidade + Crescimento (%) (Plotly, 2 eixos) ---
     fig_q = go.Figure()
@@ -356,8 +362,11 @@ elif selected == "Exportações":
     st.plotly_chart(fig_q, use_container_width=True)
 
     st.markdown("""
-Para entender melhor os acontecimentos relevantes, neste período. Podemos relacionar a exportação por quantidade e por valor.
+    Essa tendência de crescimento contínuo tem sido impulsionada por **estratégias de marketing**, **melhoria na qualidade dos produtos**, **diversificação de mercados** e **aumento da competitividade** frente a outros produtores internacionais.  
+
+    Para entender melhor os acontecimentos relevantes neste período, podemos relacionar a exportação por **quantidade** e por **valor**.
     """)
+
 
     # --- Barras agrupadas: Valor x Quantidade ---
     fig_export_most_amount = go.Figure(data=[
@@ -375,14 +384,15 @@ Para entender melhor os acontecimentos relevantes, neste período. Podemos relac
 
     
     st.markdown("""
-Analisando essa o gráfico abaixo, podemos notar duas situações que nos chamam atenção neste período.  
-Dois picos se destacam: o expressivo aumento de **quantidade** em **2009** e de **valor** em **2013**.  
+    Ao analisar esse histórico, dois picos chamam a atenção: o expressivo aumento de **quantidade** em **2009** e o salto no **valor exportado** em **2013**.  
 
-O pico de 2009 está diretamente relacionado à adoção do **Prêmio de Escoamento de Produção (PEP)** pelo Governo Federal.  
-Com isso, o valor em dólar não cresce na mesma proporção, sendo essa desproporção agravada pela crise mundial.  
+    O crescimento de **2009** está diretamente relacionado à adoção do *Prêmio de Escoamento de Produção (PEP)* pelo Governo Federal, o que elevou o volume exportado, mas sem proporcionar aumento em valor, agravado pela **crise econômica global**.  
 
-Já o pico de valor no ano de 2013 também se deve à adoção do **PEP**, mas também ao programa de exportação **Wine of Brazil**. Na tabela abaixo, há possíveis acontecimentos que podem estar relacionados ao período.
-""")
+    Já o pico de **2013** também foi influenciado pelo *PEP*, mas contou ainda com o impacto positivo do programa de promoção internacional **Wine of Brazil**.  
+
+    Na tabela abaixo, há possíveis acontecimentos que podem estar relacionados aos períodos.
+    """)
+
 
     st.markdown("""
 | Ano(s) | Comportamento | Possíveis Eventos / Influências |
@@ -394,27 +404,11 @@ Já o pico de valor no ano de 2013 também se deve à adoção do **PEP**, mas t
 | 2021–2022 | Recuperação gradual nos dois indicadores | O contexto global de reabertura econômica pós-pandemia elevou a demanda por vinhos, especialmente premium e espumantes. Setores de horeca cresceram, afetando exportações [8] |
 """)
 
-
-    # --- Linha: Top 5 países por valor ao longo do tempo ---
-    fig = px.line(
-        df_top_export,
-        x="ano", y="quantidade_dolar", color="pais", markers=True,
-        labels={"ano": "Ano", "quantidade_dolar": "Quantidade (dólar)", "pais": "País"},
-        title="Exportação de Vinho por País ao Longo do Tempo (Top 5)"
-    )
-    fig.update_layout(xaxis=dict(tickmode='linear'),
-                      legend_title="País", hovermode="x unified",
-                      template='plotly_white')
-    st.plotly_chart(fig, use_container_width=True)
-
     st.markdown("""
-    A análise dos dados revela que o **Paraguai** se consolidou como o principal destino dos vinhos nacionais em relação a valor monetário e quantidade, especialmente a partir de 2016, com um crescimento consistente e expressivo até 2022.  
-    Esse avanço pode ser atribuído a fatores como a **proximidade geográfica**, **acordos comerciais regionais no âmbito do Mercosul** e **menor barreira de entrada no mercado**[9].
-    """)
-
-
-
-# Top 5 países por VALOR acumulado (usando seu export_paises e top_paises já criados)
+Os principais destinos do **vinho brasileiro** no mercado internacional revelam uma forte concentração nas exportações para o **Paraguai**, seguido por **Rússia**, **Estados Unidos**, **China** e **Reino Unido**.
+""")
+    
+    # Top 5 países por VALOR acumulado (usando seu export_paises e top_paises já criados)
     export = pd.read_csv('dados/exportacao_vinho_ready.csv', sep=',')
     export_15anos = export[export['ano'].isin(anos_validos)].copy()
 
@@ -460,11 +454,43 @@ Já o pico de valor no ano de 2013 também se deve à adoção do **PEP**, mas t
     )
 
     st.plotly_chart(fig_top_valor, use_container_width=True)
-    st.markdown("""
-    Analisando o gráfico acima, por outro lado, mercados estratégicos como **Estados Unidos**, **Reino Unido** e **China** mantêm-se com valores mais discretos, mas estáveis.
 
-    A **Rússia**, embora tenha apresentado um pico atípico de importações em 2013, possivelmente em razão de uma operação denominada *Prêmio de Escoamento de Produção (PEP)*[10], não manteve a consistência nos anos seguintes, o que indica volatilidade e dependência de fatores externos, como questões geopolíticas e econômicas.
-    """)
+    st.markdown("""
+Ao analisar a evolução desses países ao longo do tempo, nota-se que o **Paraguai** se consolidou como o principal destino dos vinhos nacionais em relação a **valor monetário** e **quantidade**, especialmente a partir de **2016**, com um crescimento consistente e expressivo até **2022**.  
+
+Esse avanço pode ser atribuído a fatores como a **proximidade geográfica**, **acordos comerciais regionais** no âmbito do **Mercosul** e **menor barreira de entrada no mercado**. Trata-se de um exemplo claro de como o fortalecimento de parcerias regionais pode alavancar o setor vitivinícola nacional.
+""")
+
+
+    # --- Linha: Top 5 países por valor ao longo do tempo ---
+    fig = px.line(
+        df_top_export,
+        x="ano", y="quantidade_dolar", color="pais", markers=True,
+        labels={"ano": "Ano", "quantidade_dolar": "Quantidade (dólar)", "pais": "País"},
+        title="Exportação de Vinho por País ao Longo do Tempo (Top 5)"
+    )
+    fig.update_layout(xaxis=dict(tickmode='linear'),
+                      legend_title="País", hovermode="x unified",
+                      template='plotly_white')
+    st.plotly_chart(fig, use_container_width=True)
+
+
+
+
+
+
+    st.markdown("""
+Por outro lado, mercados estratégicos como **Estados Unidos**, **Reino Unido** e **China** mantêm-se com valores mais discretos, mas estáveis, sugerindo que há espaço para expansão, desde que estratégias adequadas sejam adotadas.  
+Esses países, reconhecidos por seu **alto consumo per capita** e **exigência de qualidade**, representam uma oportunidade para o reposicionamento do vinho brasileiro como um produto de **valor agregado**, voltado ao público premium.  
+Para isso, será essencial investir em **diferenciação** por meio de **certificações de qualidade**, **presença em feiras internacionais**, **parcerias comerciais sólidas** e ações de marketing voltadas à **valorização da identidade e da origem** do vinho nacional.
+
+A **Rússia**, embora tenha apresentado um pico atípico de importações em **2013**, possivelmente em razão do **Prêmio de Escoamento de Produção (PEP)**, não manteve a consistência nos anos seguintes. Isso indica **volatilidade** e **dependência de fatores externos**, como questões **geopolíticas** e **econômicas**, reforçando a importância de uma estratégia de **diversificação de mercados**, priorizando aqueles com maior **estabilidade** e **previsibilidade comercial**.
+
+De forma geral, os dados apontam que, embora o Brasil ainda não seja protagonista no cenário global de exportação de vinhos, há **avanços concretos** e **oportunidades evidentes**.  
+A expansão passa pela **segmentação de produtos** para diferentes perfis de mercado, **valorização do território brasileiro** e **maior articulação entre produtores, governo e entidades de promoção comercial**.  
+Com **planejamento**, **investimentos** e **posicionamento estratégico**, é possível ampliar a **presença internacional** dos vinhos brasileiros e consolidar sua **reputação** como produto **competitivo, autêntico e de qualidade**.
+""")
+
 
 
     st.markdown("""
@@ -480,7 +506,7 @@ Já o pico de valor no ano de 2013 também se deve à adoção do **PEP**, mas t
 #Página Importações
     
 elif selected == "Importações":
-    st.subheader("**Importações**")
+    st.subheader(" 📥 Importações")
 
 
     st.markdown("""Ao observar a evolução da quantidade de vinho importado pelo Brasil nos últimos 15 anos, nota-se uma trajetória de crescimento consistente, com variações pontuais. O gráfico evidencia dois períodos de destaque: o salto significativo entre 2016 e 2017 e o novo avanço expressivo entre 2019 e 2020.
@@ -630,19 +656,20 @@ elif selected == "Importações":
     st.markdown("""
     **Referências:**
 
-    [11](https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1100897/1/ComunicadoTecnico207.pdf)[12](https://veja.abril.com.br/gastronomia/como-brasil-se-tornou-um-dos-poucos-mercados-prosperos-para-vinho-em-2020/)
+    [11](https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1100897/1/ComunicadoTecnico207.pdf)
+    [12](https://veja.abril.com.br/gastronomia/como-brasil-se-tornou-um-dos-poucos-mercados-prosperos-para-vinho-em-2020/)
     [13](https://www.winesa.com.br/setor-comemora-recorde-no-consumo-de-vinho-no-brasil-em-2020/)
     [14](https://www.ilo.org/sites/default/files/2024-11/Research%20Brief%20Wine%20Reinecke%20Torres%20October%202024.pdf)
     [15](https://www.gov.br/mdic/pt-br/assuntos/noticias/mdic/brasil-e-chile-assinam-acordo-de-livre-comercio)
     [16](https://www.folhadelondrina.com.br/economia/importacoes-do-chile-tem-salto-no-brasil-no-ultimo-ano-3065494e.html?d=1)
     """)
-
+    st.dataframe(imp_15anos)
 
 
 #Página Mercados Futuros
 
 elif selected == "Mercados futuros":
-    st.subheader("**Mercados futuros**")
+    st.subheader(" 📈 Mercados futuros")
     
 
     st.markdown("""A análise do fluxo comercial de vinhos revela uma balança deficitária para o Brasil. Enquanto as importações apresentam trajetória ascendente e consistente, as exportações permanecem em patamares significativamente inferiores, com oscilações discretas e crescimento modesto.""")
@@ -894,19 +921,33 @@ elif selected == "Mercados futuros":
     Já no continente asiático, apesar de a China (7º maior importador em valor monetário) e o Japão (5º) registraram queda no consumo de vinho, acompanhando a retração global, eles seguiram entre os maiores importadores mundiais. O Japão se destaca pelo segundo maior preço médio pago por litro entre os principais importadores (€6,35), enquanto a China mantém um valor expressivo (€5,21)[19], o que indica potencial para exportações de vinhos brasileiros, especialmente aqueles de maior valor agregado.
     """)
 
+
+    st.markdown("""
+    **Referências:**
+
+    [17](https://cambiocolombia.com/gastronomia/vinos-mercado-cultura-crecimiento-colombia)
+    [18](https://www.correiobraziliense.com.br/economia/2025/05/7160612-o-problema-do-mercado-de-vinhos-brasileiros-comeca-com-a-tributacao-diz-empresario.html)
+    [19](https://vino-joy.com/2025/04/17/oiv-global-wine-consumption-hits-historic-low-how-is-asia-faring/)
+    """)
+
 elif selected == "Sobre":
-    st.title("SOBRE")
+    st.subheader(" 📊 Sobre")
     st.markdown("""
     Este projeto foi desenvolvido por estudantes da **Turma 10 DTAT** da **FIAP – Pós Tech em Data Analytics** como trabalho de conclusão da **Fase 1 – Data Analysis and Exploration**.  
 
     O estudo teve como objetivo explorar, tratar e analisar bases públicas do setor vitivinícola do Estado do Rio Grande do Sul, gerando visualizações e insights estratégicos para compreender o comércio de vinhos no cenário nacional e internacional.  
 
     **Equipe:**  
-    - Daniele  
-    - Monalisa  
-    - Marcelo  
-    - Ricardo  
+    - Daniele Oliveira
+    - Hélio Ricardo
+    - Marcelo Cruz
+    - Monalisa Meyrelle     
+    
+    Links úteis:
                 
-    Você pode acessar o repositório [aqui](https://github.com/mrcl-crz/fiap-tech-challenge-01).
+    * [Notebook do projeto](https://colab.research.google.com/drive/1LH_YP_es4C5SK1nv1l2sPcLCG01ImHsg?usp=sharing)
+    * [Vitivinicultura](http://vitibrasil.cnpuv.embrapa.br/index.php?opcao=opt_01)
+    
     **Agosto de 2025**
     """)
+  
