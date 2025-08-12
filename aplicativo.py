@@ -324,13 +324,12 @@ if selected == "Geral":
         st.markdown("**Importações (amostra)**")
         st.dataframe(imp_15anos.head(50), use_container_width=True)
 
-
+    
 
 
 # Página Exportações
 elif selected == "Exportações":
     st.subheader("**Exportações**")  
-
 
     st.markdown("""
     Com base nos dados apresentados em gráficos, observa-se uma evolução significativa das exportações brasileiras de vinhos entre 2009 e 2023.
@@ -361,22 +360,22 @@ Para entender melhor os acontecimentos relevantes, neste período. Podemos relac
     """)
 
     # --- Barras agrupadas: Valor x Quantidade ---
-    fig_b = go.Figure(data=[
+    fig_export_most_amount = go.Figure(data=[
         go.Bar(name='Valor (US$)',     x=df_agg['ano'], y=df_agg['quantidade_dolar']),
         go.Bar(name='Quantidade (kg)', x=df_agg['ano'], y=df_agg['quantidade_kg'])
     ])
-    fig_b.update_layout(
+    fig_export_most_amount.update_layout(
         barmode='group', xaxis_title='Ano', yaxis_title='Valores',
         title='Exportações por Ano: Valor x Quantidade',
         legend_title='Indicador',
         xaxis=dict(type='category'),
         template='plotly_white', height=500
     )
-    st.plotly_chart(fig_b, use_container_width=True)
+    st.plotly_chart(fig_export_most_amount, use_container_width=True)
 
     
     st.markdown("""
-Analisando o gráfico abaixo, podemos notar duas situações que nos chamam atenção neste período.  
+Analisando essa o gráfico abaixo, podemos notar duas situações que nos chamam atenção neste período.  
 Dois picos se destacam: o expressivo aumento de **quantidade** em **2009** e de **valor** em **2013**.  
 
 O pico de 2009 está diretamente relacionado à adoção do **Prêmio de Escoamento de Produção (PEP)** pelo Governo Federal.  
@@ -415,7 +414,20 @@ Já o pico de valor no ano de 2013 também se deve à adoção do **PEP**, mas t
 
 
 
-#  Top 5 países por VALOR acumulado (usando seu export_paises e top_paises já criados)
+# Top 5 países por VALOR acumulado (usando seu export_paises e top_paises já criados)
+    export = pd.read_csv('dados/exportacao_vinho_ready.csv', sep=',')
+    export_15anos = export[export['ano'].isin(anos_validos)].copy()
+
+    export_paises = (
+    export_15anos.groupby(['ano', 'pais'])['quantidade_dolar']
+    .sum().reset_index()
+    )
+    top_paises = (
+        export_paises.groupby('pais')['quantidade_dolar']
+        .sum().sort_values(ascending=False).head(5).index
+    )
+    df_top_export = export_paises[export_paises['pais'].isin(top_paises)]
+
     top_paises_valor_df = (
         export_paises[export_paises['pais'].isin(top_paises)]
         .groupby('pais', as_index=False)['quantidade_dolar']
@@ -432,8 +444,6 @@ Já o pico de valor no ano de 2013 também se deve à adoção do **PEP**, mas t
         text='quantidade_dolar',
         color='pais'
     )
-
-    
 
     # formatação bonita: sem legenda repetida, rótulos fora e valores com separador
     fig_top_valor.update_traces(
@@ -682,26 +692,194 @@ elif selected == "Mercados futuros":
     Diante desse contexto, é essencial compreender para onde os vinhos brasileiros estão sendo enviados atualmente. A distribuição das exportações por continente revela que a América do Sul concentra a maior fatia em valor monetário.
     """)
 
+    pais_para_continente_lower = {
+        "afeganistao": "Asia",
+    "alemanha_republica_democratica": "Europe",
+    "antilhas_holandesas": "North America",
+    "antigua_e_barbuda": "North America",
+    "arabia_saudita": "Asia",
+    "australia": "Oceania",
+    "barein": "Asia",
+    "belice": "North America",
+    "bolivia": "South America",
+    "brasil": "South America",
+    "bulgaria": "Europe",
+    "belgica": "Europe",
+    "camaroes": "Africa",
+    "canada": "North America",
+    "catar": "Asia",
+    "chipre": "Asia",
+    "cingapura": "Asia",
+    "colombia": "South America",
+    "comores": "Africa",
+    "coreia_republica_sul": "Asia",
+    "costa_do_marfim": "Africa",
+    "croacia": "Europe",
+    "dinamarca": "Europe",
+    "emirados_arabes_unidos": "Asia",
+    "equador": "South America",
+    "eslovaca_republica": "Europe",
+    "espanha": "Europe",
+    "estados_unidos": "North America",
+    "estonia": "Europe",
+    "filipinas": "Asia",
+    "finlandia": "Europe",
+    "franca": "Europe",
+    "gana": "Africa",
+    "granada": "North America",
+    "grecia": "Europe",
+    "guiana_francesa": "South America",
+    "guine_bissau": "Africa",
+    "hungria": "Europe",
+    "ilha_de_man": "Europe",
+    "ilhas_virgens": "North America",
+    "indonesia": "Asia",
+    "irlanda": "Europe",
+    "ira": "Asia",
+    "italia": "Europe",
+    "japao": "Asia",
+    "jordania": "Asia",
+    "letonia": "Europe",
+    "liberia": "Africa",
+    "libano": "Asia",
+    "malavi": "Africa",
+    "malasia": "Asia",
+    "martinica": "North America",
+    "mauritania": "Africa",
+    "mocambique": "Africa",
+    "mexico": "North America",
+    "namibia": "Africa",
+    "nicaragua": "North America",
+    "nigeria": "Africa",
+    "noruega": "Europe",
+    "nova_caledonia": "Oceania",
+    "nova_zelandia": "Oceania",
+    "oma": "Asia",
+    "panama": "North America",
+    "paraguai": "South America",
+    "paises_baixos": "Europe",
+    "polonia": "Europe",
+    "porto_rico": "North America",
+    "quenia": "Africa",
+    "reino_unido": "Europe",
+    "russia": "Europe",
+    "serra_leoa": "Africa",
+    "singapura": "Asia",
+    "suazilandia": "Africa",
+    "suecia": "Europe",
+    "suica": "Europe",
+    "sao_cristovao_e_nevis": "North America",
+    "sao_vicente_e_granadinas": "North America",
+    "tailandia": "Asia",
+    "tanzania": "Africa",
+    "tcheca_republica": "Europe",
+    "toquelau": "Oceania",
+    "tunisia": "Africa",
+    "turquia": "Asia",
+    "uruguai": "South America",
+    "vietna": "Asia",
+    "africa_do_sul": "Africa",
+    "austria": "Europe",
+    "angola": "Africa",
+    "anguilla": "North America",
+    "argentina": "South America",
+    "aruba": "North America",
+    "bahamas": "North America",
+    "bangladesh": "Asia",
+    "barbados": "North America",
+    "benin": "Africa",
+    "bermudas": "North America",
+    "bosnia_herzegovina": "Europe",
+    "cabo_verde": "Africa",
+    "cayman_ilhas": "North America",
+    "chile": "South America",
+    "china": "Asia",
+    "cocos_keeling_ilhas": "Asia",
+    "congo": "Africa",
+    "costa_rica": "North America",
+    "cuba": "North America",
+    "curacao": "North America",
+    "dominica": "North America",
+    "el_salvador": "North America",
+    "gibraltar": "Europe",
+    "guatemala": "North America",
+    "guiana": "South America",
+    "guine_equatorial": "Africa",
+    "haiti": "North America",
+    "honduras": "North America",
+    "hong_kong": "Asia",
+    "india": "Asia",
+    "iraque": "Asia",
+    "jamaica": "North America",
+    "luxemburgo": "Europe",
+    "macau": "Asia",
+    "malta": "Europe",
+    "marshall_ilhas": "Oceania",
+    "montenegro": "Europe",
+    "palau": "Oceania",
+    "peru": "South America",
+    "pitcairn": "Oceania",
+    "portugal": "Europe",
+    "republica_dominicana": "North America",
+    "senegal": "Africa",
+    "suriname": "South America",
+    "sao_tome_e_principe": "Africa",
+    "taiwan_formosa": "Asia",
+    "togo": "Africa",
+    "trinidade_tobago": "North America",
+    "tuvalu": "Oceania",
+    "vanuatu": "Oceania",
+    "venezuela": "South America",
+    }
+    
+    df_exportacao = pd.read_csv('dados/exportacao_vinho_ready.csv', sep=',')
+
+    export_15anos = df_exportacao[df_exportacao['ano'].isin(anos_validos)]
+
+    export_15anos["continente"] = export_15anos["pais"].map(pais_para_continente_lower).fillna("Desconhecido")
+
+    df_agg_cont_15years = export_15anos.groupby("continente")[["quantidade_dolar", "quantidade_kg"]].sum().reset_index()
+
+    df_agg_cont_15years = df_agg_cont_15years.sort_values(by="quantidade_dolar", ascending=False)
+
     fig = px.bar(
         df_agg_cont_15years,
         x="continente",
         y="quantidade_dolar",
         title="Exportações por Continente (15 anos)",
         labels={"continente": "Continente", "quantidade_dolar": "Valor Monetário Exportado"},
-        color="continente",
-        text="quantidade_dolar"
+        color="continente",  
+        text="quantidade_dolar"  
     )
 
     # Personalização extra
-    fig.update_traces(
-        texttemplate='%{text:,.0f}',  # formata números sem casas decimais
-        textposition='outside'
-    )
+    fig.update_traces(texttemplate='%{text:,.0f}', textposition='outside')  # formata números sem casas decimais
     fig.update_layout(
         xaxis_tickangle=-45,
         template='plotly_white',
         showlegend=False
     )
+
+    # figZ = px.bar(
+    #     df_agg_cont_15years,
+    #     x="continente",
+    #     y="quantidade_dolar",
+    #     title="Exportações por Continente (15 anos)",
+    #     labels={"continente": "Continente", "quantidade_dolar": "Valor Monetário Exportado"},
+    #     color="continente",
+    #     text="quantidade_dolar"
+    # )
+
+    # # Personalização extra
+    # figZ.update_traces(
+    #     texttemplate='%{text:,.0f}',  # formata números sem casas decimais
+    #     textposition='outside'
+    # )
+    # figZ.update_layout(
+    #     xaxis_tickangle=-45,
+    #     template='plotly_white',
+    #     showlegend=False
+    # )
 
     # Exibir no Streamlit
     st.plotly_chart(fig, use_container_width=True)
